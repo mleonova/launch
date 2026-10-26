@@ -92,6 +92,37 @@
   }
 
   /* ---------------------------------------------------------
+     Hero intro: headline words fade in one by one
+  --------------------------------------------------------- */
+  var heroH1 = document.querySelector(".hero h1");
+  if (heroH1 && !reduceMotion) {
+    heroH1.classList.remove("reveal");
+    var wordIndex = 0;
+    var splitWords = function (node) {
+      Array.prototype.slice.call(node.childNodes).forEach(function (child) {
+        if (child.nodeType === 3) {
+          var frag = document.createDocumentFragment();
+          child.textContent.split(/(\s+)/).forEach(function (part) {
+            if (!part) return;
+            if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+            var w = document.createElement("span");
+            w.className = "hero-word";
+            w.textContent = part;
+            w.style.animationDelay = (0.15 + wordIndex * 0.09).toFixed(2) + "s";
+            wordIndex++;
+            frag.appendChild(w);
+          });
+          node.replaceChild(frag, child);
+        } else if (child.nodeType === 1) {
+          splitWords(child);
+        }
+      });
+    };
+    splitWords(heroH1);
+    heroH1.classList.add("is-animating");
+  }
+
+  /* ---------------------------------------------------------
      Reveal on scroll (staggered within each parent)
   --------------------------------------------------------- */
   var reveals = document.querySelectorAll(".reveal");
@@ -237,31 +268,31 @@
   var CATEGORIES = {
     tightening: {
       name: "Skin Tightening",
-      desc: "Energy-based tightening stimulates collagen to firm lax skin on the face, neck and body — with little to no downtime, which makes it an easy add-on to an existing menu.",
+      desc: "Energy-based tightening stimulates collagen to firm lax skin on the face, neck and body - with little to no downtime, which makes it an easy add-on to an existing menu.",
       treats: ["Jowls & jawline", "Neck laxity", "Fine lines", "Body contouring"],
       platforms: "Sciton, Cutera, Lumenis"
     },
     pigment: {
       name: "Pigmented Lesion Removal",
-      desc: "Light and laser treatments that target melanin to clear sun spots and uneven tone, often in a short series of sessions.",
+      desc: "Light and laser treatments that target pigmentation to clear sun spots and uneven tone, often in a short series of sessions.",
       treats: ["Sun & age spots", "Freckles", "Uneven tone", "Sun damage"],
       platforms: "Sciton BBL, Cutera, Solta Clear + Brilliant"
     },
     rejuvenation: {
       name: "Skin Rejuvenation",
-      desc: "Gentle fractional and light-based treatments for brighter, smoother skin — popular as recurring maintenance and membership offerings.",
+      desc: "Gentle fractional and light-based treatments for brighter, smoother skin - popular as recurring maintenance and membership offerings.",
       treats: ["Dullness", "Texture", "Fine lines", "Enlarged pores"],
-      platforms: "Sciton MOXI, Solta HALO, Cutera"
+      platforms: "Sciton MOXI and HALO, Solta Clear + Brilliant, Cutera"
     },
     hair: {
       name: "Hair Removal",
-      desc: "One of the most requested aesthetic treatments, built on repeat visits — a dependable base of recurring revenue.",
+      desc: "One of the most requested aesthetic treatments, built on repeat visits - a dependable base of recurring revenue.",
       treats: ["Face", "Underarms", "Legs", "Bikini"],
       platforms: "Lumenis, Sciton BBL"
     },
     tattoo: {
       name: "Tattoo Removal",
-      desc: "Laser systems that break down tattoo ink over a series of sessions — a multi-visit treatment with strong patient demand.",
+      desc: "Laser systems that break down tattoo ink over a series of sessions - a multi-visit treatment with strong patient demand.",
       treats: ["Dark inks", "Colored inks", "Cover-up prep", "Fading"],
       platforms: "Cutera, Lumenis"
     },
@@ -269,12 +300,12 @@
       name: "Skin Resurfacing",
       desc: "Fractional and ablative resurfacing for deeper texture and scarring concerns, with adjustable intensity to match patient downtime.",
       treats: ["Acne scars", "Wrinkles", "Texture", "Sun damage"],
-      platforms: "Sciton MOXI, ProFractional & TRL, Cutera"
+      platforms: "Sciton MOXI, HALO, ProFractional and Contour TRL"
     },
     vascular: {
       name: "Vascular Lesion",
       desc: "Targets visible vessels and redness to calm and even out the complexion.",
-      treats: ["Redness", "Spider veins", "Broken capillaries", "Rosacea flushing"],
+      treats: ["Redness", "Spider veins", "Broken capillaries", "Rosacea"],
       platforms: "Sciton BBL, Lumenis"
     },
     womens: {
@@ -436,7 +467,7 @@
       fetch(endpoint, { method: "POST", headers: { Accept: "application/json" }, body: new FormData(form) })
         .then(function (response) {
           if (response.ok) {
-            statusEl.textContent = "Thanks — a specialist will be in touch shortly.";
+            statusEl.textContent = "Thanks - a specialist will be in touch shortly.";
             statusEl.className = "form-status success";
             form.reset();
           } else {
