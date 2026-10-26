@@ -1,6 +1,6 @@
-# Launch Aesthetics
+# Aesthetic Launch
 
-A static marketing site for Launch Aesthetics — aesthetic laser rentals and practice-growth services. Built with plain HTML, CSS and JavaScript, no build step or framework required.
+A static marketing site for Aesthetic Launch — aesthetic laser rentals and practice-growth services. Built with plain HTML, CSS and JavaScript, no build step or framework required.
 
 ## What's included
 
@@ -29,7 +29,7 @@ No build tools needed. Either:
    ```bash
    git init
    git add .
-   git commit -m "Initial commit: Launch Aesthetics site"
+   git commit -m "Initial commit: Aesthetic Launch site"
    git branch -M main
    git remote add origin https://github.com/<your-username>/<your-repo>.git
    git push -u origin main
